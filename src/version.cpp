@@ -1,7 +1,4 @@
 #include "uincampus/version.hpp"
 namespace uin {
-std::string_view version()
-{
-    return UIN_VERSION;
-}
+std::string version() { return "0.2.0"; }
 }

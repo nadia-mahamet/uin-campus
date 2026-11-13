@@ -1,5 +1,5 @@
 #pragma once
-#include <string_view>
+#include <string>
 namespace uin {
-std::string_view version();
+std::string version();
 }

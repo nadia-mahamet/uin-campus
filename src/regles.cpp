@@ -1,23 +1,21 @@
 #include "uincampus/regles.hpp"
 namespace uin {
-Mention mentionPour(double moyenne)
-{
-if (moyenne < seuilValidation) { return Mention::Ajourne; }
-if (moyenne < 12.0){ return Mention::Passable; }
-if (moyenne < 14.0){ return Mention::AssezBien; }
-if (moyenne < 16.0){ return Mention::Bien; }
-return Mention::TresBien;
+bool estNoteValide(double n) { return n >= noteMin && n <= noteMax; }
+Mention mentionPour(double m) {
+  if (m < 10.0) return Mention::Ajourne;
+  if (m < 12.0) return Mention::Passable;
+  if (m < 14.0) return Mention::AssezBien;
+  if (m < 16.0) return Mention::Bien;
+  return Mention::TresBien;
 }
-std::string_view libelle(Mention mention)
-{
-using enum Mention;
-switch (mention) {
-case Ajourne:return "Ajourné";
-case Passable:return "Passable";
-case AssezBien: return "Assez bien";
-case Bien:return "Bien";
-case TresBien:return "Très bien";
+std::string libelle(Mention m) {
+  switch (m) {
+    case Mention::Ajourne: return "Ajourne";
+    case Mention::Passable: return "Passable";
+    case Mention::AssezBien: return "Assez Bien";
+    case Mention::Bien: return "Bien";
+    case Mention::TresBien: return "Tres Bien";
+  }
+  return "";
 }
-return "Inconnue";
 }
-} // namespace uin
