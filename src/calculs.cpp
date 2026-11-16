@@ -4,39 +4,44 @@
 #include <cmath>
 #include <numeric>
 namespace uin {
-double somme(const std::vector<double>& valeurs) {
-  return std::accumulate(valeurs.begin(), valeurs.end(), 0.0);
+double somme(const std::vector<double> &valeurs) {
+    return std::accumulate(valeurs.begin(), valeurs.end(), 0.0);
 }
-double moyenne(const std::vector<double>& notes) {
-  assert(!notes.empty() && "moyenne() : aucune note");
-  return somme(notes) / static_cast<double>(notes.size());
+double moyenne(const std::vector<double> &notes) {
+    assert(!notes.empty() && "moyenne() : aucune note");
+    return somme(notes) / static_cast<double>(notes.size());
 }
-double moyenne(const std::vector<double>& notes, const std::vector<double>& coefficients) {
-  assert(!notes.empty() && "moyenne() : aucune note");
-  assert(notes.size() == coefficients.size() && "moyenne() : tailles differentes");
-  const double sommeCoefficients = somme(coefficients);
-  assert(sommeCoefficients > 0.0 && "moyenne() : somme des coefficients nulle");
-  const double sommePonderee =
-      std::inner_product(notes.begin(), notes.end(), coefficients.begin(), 0.0);
-  return sommePonderee / sommeCoefficients;
+double moyenne(const std::vector<double> &notes,
+               const std::vector<double> &coefficients) {
+    assert(!notes.empty() && "moyenne() : aucune note");
+    assert(notes.size() == coefficients.size() &&
+           "moyenne() : tailles differentes");
+    const double sommeCoefficients = somme(coefficients);
+    assert(sommeCoefficients > 0.0 &&
+           "moyenne() : somme des coefficients nulle");
+    const double sommePonderee = std::inner_product(notes.begin(), notes.end(),
+                                                    coefficients.begin(), 0.0);
+    return sommePonderee / sommeCoefficients;
 }
-Statistiques calculerStatistiques(const std::vector<double>& notes) {
-  assert(!notes.empty() && "calculerStatistiques() : aucune note");
-  const auto [miniIt, maxiIt] = std::minmax_element(notes.begin(), notes.end());
-  const double moy = moyenne(notes);
-  const double sommeCarres = std::accumulate(
-      notes.begin(), notes.end(), 0.0,
-      [moy](double total, double n) { return total + (n - moy) * (n - moy); });
-  return Statistiques{*miniIt, *maxiIt, moy,
-                      std::sqrt(sommeCarres / static_cast<double>(notes.size()))};
+Statistiques calculerStatistiques(const std::vector<double> &notes) {
+    assert(!notes.empty() && "calculerStatistiques() : aucune note");
+    const auto [miniIt, maxiIt] =
+        std::minmax_element(notes.begin(), notes.end());
+    const double moy = moyenne(notes);
+    const double sommeCarres = std::accumulate(
+        notes.begin(), notes.end(), 0.0, [moy](double total, double n) {
+            return total + (n - moy) * (n - moy);
+        });
+    return Statistiques{
+        *miniIt, *maxiIt, moy,
+        std::sqrt(sommeCarres / static_cast<double>(notes.size()))};
 }
-int compterValidees(const std::vector<double>& notes, double seuil) {
-  return static_cast<int>(
-      std::count_if(notes.begin(), notes.end(),
-                    [seuil](double n) { return n >= seuil; }));
+int compterValidees(const std::vector<double> &notes, double seuil) {
+    return static_cast<int>(std::count_if(
+        notes.begin(), notes.end(), [seuil](double n) { return n >= seuil; }));
 }
 double arrondir(double valeur, int decimales) {
-  const double facteur = std::pow(10.0, decimales);
-  return std::round(valeur * facteur) / facteur;
+    const double facteur = std::pow(10.0, decimales);
+    return std::round(valeur * facteur) / facteur;
 }
-}
+} // namespace uin
